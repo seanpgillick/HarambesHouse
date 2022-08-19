@@ -3,8 +3,57 @@
 <head>
     <meta charset="utf-8">
     <title>Harambe's House Casino</title>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="index.js"></script>
+    <link rel="stylesheet" type="text/css" href="basic.css" />
+
 </head>
 <body>
-    <p>Test</p>
+    <!-- Start of first page -->
+    <div data-role="page" id="Welcome">
+        <!-- header -->
+        <div data-role="header" data-position="fixed">
+            <div class="top">
+                <div data-role="navbar">
+                    <img id="logo" src="logo.png" alt="Harambe's House">
+
+                    <div id="deposit"> 
+                        <a href="#Deposit"><button>
+                            <div id="balance">$0.00</div>
+                            <div>Deposit ∨</div>
+                        </button></a>  
+                    </div>
+
+                    <a id="userIcon" href="" data-icon="user"></a>
+                </div>
+            </div>
+        </div>
+        <!-- /header -->
+
+        <!-- content -->
+        <div data-role="content" data-collapsed=”false”>      
+            <h3>Test content</h3>
+        </div><!-- /content -->
+        
+        <!-- footer -->
+        <div data-role="footer">
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li> <a>Drexel CS338</a>
+                        <li> <a href="" data-icon="info">Contact Us</a>
+                    </ul>
+                </div>
+            </div>
+               
+        </div><!-- /footer -->
+    </div>
+    <!-- End of first page -->
+
+
+
+
 </body>
 </html>
