@@ -29,7 +29,7 @@
                         </button></a>  
                     </div>
 
-                    <a id="userIcon" href="" data-icon="user"></a>
+                    <a id="userIcon" href="#login" data-icon="user"></a>
                 </div>
             </div>
         </div>
@@ -267,6 +267,62 @@
 
         <div data-role="content">
             <h3>Roulette</h3>
+        </div>
+        
+        <!-- footer -->
+        <div data-role="footer">
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li> <a>Drexel CS338</a>
+                        <li> <a href="" data-icon="info">Contact Us</a>
+                    </ul>
+                </div>
+            </div>
+               
+        </div><!-- /footer -->
+    </div>
+
+        <!--------------------------------------------------------------------->
+    <!-- Start of Login page -->
+    <div data-role="page" id="login">
+        <!-- header -->
+        <div data-role="header" data-position="fixed">
+            <div class="top">
+                <div data-role="navbar">
+                    <a href="#Welcome" style="float:left;">
+                        <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
+                    </a>
+
+                    <div id="deposit"> 
+                        <a href="#Deposit"><button>
+                            <div id="balance">$0.00</div>
+                            <div>Deposit ∨</div>
+                        </button></a>  
+                    </div>
+
+                    <a id="userIcon" href="" data-icon="user"></a>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="content">
+            <h3>Login</h3>
+            <div data-role="popup" id="popupInfo" class="ui-content" data-theme="a" style="maxwidth:350px;">Tooltip</div>
+
+            <div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
+                <form>
+                <div style="padding:10px 20px;">
+                <h3>Please sign in</h3>
+                <label for="un" class="ui-hidden-accessible">Username:</label>
+                <input type="text" name="user" id="un" value="" placeholder="username" data-theme="a"
+                />
+                <label for="pw" class="ui-hidden-accessible">Password:</label>
+                <input type="password" name="pass" id="pw" value="" placeholder="password" datatheme="a" />
+                <button type="submit" data-theme="b">Sign in</button>
+                </div>
+                </form>
+            </div>
         </div>
         
         <!-- footer -->
