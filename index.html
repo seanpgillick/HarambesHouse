@@ -14,7 +14,7 @@
     <!-- Start of first page -->
     <div data-role="page" id="Welcome">
         <!-- header -->
-        <div data-role="header" class="sticky">
+        <div data-role="header" class="header">
             <h1>Test Header</h1>
         </div>
         <!-- /header -->
@@ -22,6 +22,92 @@
         <!-- content -->
         <div data-role="content" data-collapsed=”false”>      
             <h3>Test content</h3>
+            <div data-role="content" data-collapsed=”false”>
+                <div data-role="collapsible">
+                    <h3>Section 1</h3>
+                    <p>I'm the collapsible content for section 1</p>
+                </div>
+
+                <a href="#Stores"><button>Stores</button></a> 
+                <a href="#Register"><button>Register</button></a>
+                <a href="#Ride"><button>Ride</button></a> 
+                <a href="#popupBasic" data-role="button" data-rel="popup">Open Popup</a>
+                <a href="#popupPhoto" data-role="button" data-rel="popup">Open Photo</a>
+
+                <ul data-role="listview" style="padding-bottom: 25px;" data-inset=”true”>
+                    <li><a href="#bicycles">Bicycles</a></li>
+                    <li><a href="#collapsible">Collapsible</a></li>
+                    <li><a href="">Link 3</a></li>
+                    <li><a href="">Link 4</a></li>
+                </ul>
+
+                <div data-role="popup" id="popupBasic">
+                    <p>This is a completely basic popup, no options set.<p>
+                </div>
+
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class = "my-tooltipbtn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext">Learn more</a>
+                <div data-role="popup" id="popupInfo" class="ui-content" data-theme="a" style="maxwidth:350px;">Tooltip</div>
+
+                <div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
+                    <form>
+                    <div style="padding:10px 20px;">
+                    <h3>Please sign in</h3>
+                    <label for="un" class="ui-hidden-accessible">Username:</label>
+                    <input type="text" name="user" id="un" value="" placeholder="username" data-theme="a"
+                    />
+                    <label for="pw" class="ui-hidden-accessible">Password:</label>
+                    <input type="password" name="pass" id="pw" value="" placeholder="password" datatheme="a" />
+                    <button type="submit" data-theme="b">Sign in</button>
+                    </div>
+                    </form>
+                </div>
+
+                <div data-role="popup" id="popupPhoto" data-overlay-theme="a" data-theme="d" datacorners="false">
+                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a> 
+                </div>
+                <div data-role="content" data-collapsed=”false”>
+                    <div data-role="collapsible">
+                        <h3>Section 1</h3>
+                        <p>I'm the collapsible content for section 1</p>
+                    </div>
+    
+                    <a href="#Stores"><button>Stores</button></a> 
+                    <a href="#Register"><button>Register</button></a>
+                    <a href="#Ride"><button>Ride</button></a> 
+                    <a href="#popupBasic" data-role="button" data-rel="popup">Open Popup</a>
+                    <a href="#popupPhoto" data-role="button" data-rel="popup">Open Photo</a>
+    
+                    <ul data-role="listview" style="padding-bottom: 25px;" data-inset=”true”>
+                        <li><a href="#bicycles">Bicycles</a></li>
+                        <li><a href="#collapsible">Collapsible</a></li>
+                        <li><a href="">Link 3</a></li>
+                        <li><a href="">Link 4</a></li>
+                    </ul>
+    
+                    <div data-role="popup" id="popupBasic">
+                        <p>This is a completely basic popup, no options set.<p>
+                    </div>
+    
+                    <a href="#popupInfo" data-rel="popup" data-transition="pop" class = "my-tooltipbtn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext">Learn more</a>
+                    <div data-role="popup" id="popupInfo" class="ui-content" data-theme="a" style="maxwidth:350px;">Tooltip</div>
+    
+                    <div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
+                        <form>
+                        <div style="padding:10px 20px;">
+                        <h3>Please sign in</h3>
+                        <label for="un" class="ui-hidden-accessible">Username:</label>
+                        <input type="text" name="user" id="un" value="" placeholder="username" data-theme="a"
+                        />
+                        <label for="pw" class="ui-hidden-accessible">Password:</label>
+                        <input type="password" name="pass" id="pw" value="" placeholder="password" datatheme="a" />
+                        <button type="submit" data-theme="b">Sign in</button>
+                        </div>
+                        </form>
+                    </div>
+    
+                    <div data-role="popup" id="popupPhoto" data-overlay-theme="a" data-theme="d" datacorners="false">
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a> 
+                    </div>
         </div><!-- /content -->
         
         <!-- footer -->

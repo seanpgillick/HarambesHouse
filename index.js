@@ -1,7 +1,9 @@
-$(window).scroll(function(){
-    var sticky = $('.sticky'),
-        scroll = $(window).scrollTop();
-  
-    if (scroll >= 100) sticky.addClass('fixed');
-    else sticky.removeClass('fixed');
-  });
+$(window).scroll(function() {    // this will work when your window scrolled.
+    var height = $(window).scrollTop();  //getting the scrolling height of window
+    console.log("Scroll");
+    if(height  > 100) {
+        $(".header").css({"position": "fixed"});
+    } else{
+        $(".header").css({"position": "relative"});
+    }
+});
