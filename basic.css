@@ -4,7 +4,7 @@
 }
 
 .top {
-    margin:1px;
+    margin:1%;
     display: block;
     text-align:center;
 
@@ -31,4 +31,24 @@
 #logo {
     float:left;
     width: 10%;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+    text-align: center;
+    
+  }
+  
+  .flex-container > div {
+    background-color: transparent;
+    margin: 1%;
+    padding: 20px;
+    font-size: 30px;
+    width: 100%;
+  }
+  img {
+    max-width:100%;
+    max-height: 100%;
 }
