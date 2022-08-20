@@ -11,10 +11,26 @@
         <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
     </head>
     <body>
+        <script>
+            let usernameURL = getParameterByName('user');
+            let tokenURL = getParameterByName('token');
+            let urlEnd = "?user="+usernameURL+"&token="+tokenURL;
+    
+            //access query string
+            function getParameterByName(name, url = window.location.href) {
+                name = name.replace(/[\[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+        </script>
         <div data-role="header" data-position="fixed">
             <div class="top">
                 <div data-role="navbar">
-                    <a href="#Welcome" style="float:left;">
+                    <a href="http://harambeshouseapp-env.eba-3yv4umtj.us-east-1.elasticbeanstalk.com/homePage.html"
+                        onclick="location.href=this.href+urlEnd; return false;" style="float:left;">
                         <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
                     </a>
 
