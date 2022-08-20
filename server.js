@@ -109,6 +109,199 @@ app.post("/deposit", function (req, res) {
     });
 });
 
+////////////////////////////////BLACKJACK////////////////////////////////
+app.post("/blackjack", function (req, res) { 
+    //Determine which putton the user clicked
+    let action = req.body.action;
+    betAmount = req.body.betAmount;
+
+    connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.user, req.body.dbToken], function(err, result){
+        if (err) {
+            console.error('Failed to pull balance: ' + err);
+            res.status(500).send();
+        }
+
+        if (result.length > 0){
+            dbBalance = parseFloat(result[0]["balance"]);            
+            
+            if (betAmount > dbBalance){
+                res.status(403).json({"validBet":false}); 
+            }
+            let cardVals = {"A":11, "2": 2, "3": 3, "4":4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10};
+             
+            if (action == "startGame"){
+                userCards = [];
+                userVals = [];
+                userSum = 0;
+                dealerCards = [];
+                dealerVals = [];
+                dealerSum = 0;
+                 
+                //User has started a game
+                //Need to generate and return 4 cards, 1 of the dealers card will be hidden to start.
+                //Once a card as been used, remove it from the pile.
+                cards = {0:"AS", 1: "2S", 2: "3S", 3: "4S", 4: "5S", 5: "6S", 6: "7S", 7: "8S", 8: "9S", 9: "10S", 10: "JS", 11: "QS", 12: "KS",
+                         13:"AD", 14: "2D", 15: "3D", 16: "4D", 17: "5D", 18: "6D", 19: "7D", 20: "8D", 21: "9D", 22: "10D", 23: "JD", 24: "QD", 25: "KD",
+                         26:"AH", 27: "2H", 28: "3H", 29: "4H", 30: "5H", 31: "6H", 32: "7H", 33: "8H", 34: "9H", 35: "10H", 36: "JH", 37: "QH", 38: "KH",
+                         39:"AC", 40: "2C", 41: "3C", 42: "4C", 43: "5C", 44: "6C", 45: "7C", 46: "8C", 47: "9C", 48: "10C", 49: "JC", 50: "QC", 51: "KC"}
+
+                for (let x = 3; x>=0; x--){
+                    let cardNum = Math.floor(Math.random() * 52);
+                    while (!(cardNum in cards) && Object.keys(cards).length > 0){
+                        cardNum = Math.floor(Math.random() * 52);
+                    }
+
+                    let cardVal = cards[cardNum].slice(0,-1)
+                    cardVal = cardVals[cardVal];
+
+                    //Users cards
+                    if (x >= 2){
+                        userCards.push(cards[cardNum]);
+                        userVals.push(cardVal);
+                        delete cards[cardNum];
+                    }
+                    else{
+                        dealerCards.push(cards[cardNum]);
+                        dealerVals.push(cardVal);
+                        delete cards[cardNum];
+                    }
+                }
+
+                let wasBlackjackHit = false;
+                if ( (userVals[0] == 11 && userVals[1] == 10) || (userVals[0] == 10 && userVals[1] == 11 ) ){
+                    dbBalance += ( Number(betAmount) * 1.5 );
+                    wasBlackjackHit = true;
+                }
+
+                if ( (dealerVals[0] == 11 && dealerVals[1] == 10 ) || (dealerVals[0] == 10 && dealerVals[1] == 11) ){
+                    dbBalance -= Number(betAmount);
+                    wasBlackjackHit = true;
+                }
+
+                if (wasBlackjackHit){
+                    connection.query("Update accountInfo SET balance = ? WHERE username = ?", [dbBalance, req.body.user], function(err, result){
+                        if (err) {
+                            console.error('Failed to update blackjack results: ' + err);
+                            res.status(500).send();
+                        }
+                    });
+                }
+
+                let dSumStart = dealerVals[0];
+                userSum = userVals.reduce((a, b) => a + b, 0);
+                dealerSum = dealerVals.reduce((a, b) => a + b, 0);
+
+                let cardReturn = {"userCards": userCards, "userSum": userSum, "dSumStart" : dSumStart, "dealerCards": dealerCards, "dealerSum": dealerSum, "wasBlackjackHit": wasBlackjackHit, "validBet":true};
+                res.status(200).json(cardReturn);
+            }
+            else if( action == "hit"){
+                let cardNum = Math.floor(Math.random() * 52);
+                while (!(cardNum in cards) && Object.keys(cards).length > 0){
+                    cardNum = Math.floor(Math.random() * 52);
+                }
+
+                let cardVal = cards[cardNum].slice(0,-1)
+                cardVal = cardVals[cardVal];
+                userCards.push(cards[cardNum]);
+                userVals.push(cardVal)
+                userSum = userVals.reduce((a, b) => a + b, 0);
+                delete cards[cardNum];
+
+                if (userSum > 21){
+                    while(dealerSum < 17){
+                        cardNum = Math.floor(Math.random() * 52);
+                        while (!(cardNum in cards) && Object.keys(cards).length > 0){
+                            cardNum = Math.floor(Math.random() * 52);
+                        }
+
+                        cardVal = cards[cardNum].slice(0,-1)
+                        cardVal = cardVals[cardVal];
+                        dealerCards.push(cards[cardNum]);
+                        dealerVals.push(cardVal)
+                        dealerSum = dealerVals.reduce((a, b) => a + b, 0);
+                        delete cards[cardNum];
+                    }
+                }
+                gameResults(userSum, dealerSum, betAmount, dbBalance, req.body.user);
+                let hitReturn = {"userCards":userCards, "userSum": userSum, "dealerCards": dealerCards, "dealerSum": dealerSum};
+                res.status(200).json(hitReturn);
+            }
+            else if ( action = "stand"){
+                while(dealerSum < 17){
+                    cardNum = Math.floor(Math.random() * 52);
+                    while (!(cardNum in cards) && Object.keys(cards).length > 0){
+                        cardNum = Math.floor(Math.random() * 52);
+                    }
+
+                    cardVal = cards[cardNum].slice(0,-1);
+                    cardVal = cardVals[cardVal];
+                    dealerCards.push(cards[cardNum]);
+                    dealerVals.push(cardVal)
+                    dealerSum = dealerVals.reduce((a, b) => a + b, 0);
+                    delete cards[cardNum];
+                }
+                gameResults(userSum, dealerSum, betAmount, dbBalance, req.body.user);
+                let standReturn = {"dealerCards": dealerCards, "dealerSum": dealerSum};
+                res.status(200).json(standReturn);
+            }
+        }
+
+        function gameResults(userSum, dealerSum, bet, balance, username){
+            bet = Number(bet);
+            balance = Number(balance);
+            //Dealer Busts and Users dont - Users win
+            if (dealerSum > 21 && userSum <= 21){
+                balance += bet;
+            }
+            //Both the dealer and user bust - No payout or loss
+            if(dealerSum > 21 && userSum > 21){
+                balance += 0;
+            }
+            //The user busts but the dealer didn't - User loses
+            if(dealerSum <= 21 && userSum > 21){
+                balance -= bet;
+            }
+            //Nobody busts, user > dealer - User wins
+            if (userSum > dealerSum && userSum <= 21){
+                balance += bet;
+            }
+            //Nobody busts, dealer > user - User loses
+            if(userSum <= dealerSum && dealerSum <= 21){
+                balance -= bet;
+            }
+            //tie
+            if (userSum == dealerSum && dealerSum <= 21){
+                balance += 0;
+            }
+            
+            connection.query("Update accountInfo SET balance = ? WHERE username = ?", [balance, username], function(err, gameRes){
+                if (err) {
+                    console.error('Failed to update blackjack results: ' + err);
+                    res.status(500).send();
+                }
+            });
+        }
+
+    });
+});
+
+app.post("/getBal", function (req, res) {
+    let dbBal;
+    let dbToken;
+    connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.username, req.body.token], function(err, result){
+        if (err) {
+            console.error('Failed to pull balance: ' + err);
+            res.status(500).send();
+        }
+        console.log(result[0]);
+
+        if (result.length > 0){
+            dbBal = parseFloat(result[0]["balance"]);            
+            res.status(200).json({"balance" : dbBal});
+        }
+    });
+});
+
 app.get("/", function (req, res){
     res.send("It worked!");
 })
@@ -116,14 +309,6 @@ app.get("/", function (req, res){
 app.get("/new", function (req, res){
     res.send("New also worked!");
 })
-
-// app.listen(port, () => {
-//     console.log(`Listening at port: ${port}!!! :)`);
-// }); 
-// ///////////////////////////
-// app.get('/', (req, res) => {
-//     res.send("Welcome to the home page")
-// });
 
 app.listen(process.env.PORT || 5000);
 module .export = app; 
