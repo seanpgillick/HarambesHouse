@@ -80,6 +80,34 @@ app.post("/login", function (req, res) {
     });
 });
 
+app.post("/deposit", function (req, res) {
+    let dbBal;
+    let dbToken;
+    connection.query("SELECT * FROM accountInfo WHERE username = ?", [req.body.username], function(err, result){
+        if (err) {
+            console.error('Failed to search: ' + err);
+            res.status(500).send();
+        }
+        console.log(result[0]);
+
+        if (result.length > 0){
+            dbBal = parseFloat(result[0]["balance"]);
+            dbBal += parseFloat(req.body.deposit);
+            dbToken = result[0]["loginToken"];
+            
+            connection.query("Update accountInfo SET balance = ? WHERE username = ?", [dbBal, req.body.username], function(err, result){
+                if (err) {
+                    console.error('Failed to search: ' + err);
+                    res.status(500).send();
+                }
+                else{
+                    depositReturn = {"username" : req.body.username, "balance" : dbBal, "dbToken" : dbToken};
+                    res.status(200).json(depositReturn);
+                }
+            });
+        }
+    });
+});
 
 app.get("/", function (req, res){
     res.send("It worked!");

@@ -1,344 +1,88 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Harambe's House Casino</title>
-    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="basic.css" />
-    <script type="text/javascript" src="Winwheel.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
-
-
-
+	<meta charset="utf-8">
+	<title>Sign in</title>
 </head>
 <body>
-    <!-- Start of first page -->
-    <div data-role="page" id="Welcome">
-        <!-- header -->
-        <div data-role="header" data-position="fixed">
-            <div class="top">
-                <div data-role="navbar">
-                    <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
 
-                    <div id="deposit"> 
-                        <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
-                            <div>Deposit ∨</div>
-                        </button></a>  
-                    </div>
+<h2>Please Log-in:</h2>
 
-                    <a id="userIcon" href="#login" data-icon="user"></a>
-                </div>
-            </div>
-        </div>
-        <!-- /header -->
+<div id=username>
+	<label for="username">Username:</label>
+	<input id="usernameInput" type="text">
+</div>
 
-        <!-- content -->
-        <div data-role="content" data-collapsed=”false”>      
-            <div class="flex-container">
-                <div>
-                    <h3>Blackjack</h3>
-                    <a href="#Blackjack">
-                        <img src="blackjack.jpg" alt="Blackjack">
-                    </a>
-                </div>
-                <div>
-                    <h3>Slots</h3>
-                    <a href="#Slots">
-                        <img src="slots.jpg" alt="Slots">
-                    </a>
-                </div>
-                <div>
-                    <h3>Roulette</h3>
-                    <a href="#Roulette">
-                        <img src="roulette.jpg" alt="Roulette">
-                    </a>
-                </div>
-              </div>
+<div id=password>
+	<label for="password">Password:</label>
+	<input id="passwordInput" type="password">
+</div>
 
-            <div class="flex-container">
-                <div>
-                    <h3>Daily Spin</h3>
-                    <a href="#DailySpin">
-                        <img src="wheel.jpg" alt="Daily Spin">
-                    </a>
-                </div>
-            </div>
-        </div><!-- /content -->
-        
-        <!-- footer -->
-        <div data-role="footer">
-            <div data-role="footer">
-                <div data-role="navbar">
-                    <ul>
-                        <li> <a>Drexel CS338</a>
-                        <li> <a href="" data-icon="info">Contact Us</a>
-                    </ul>
-                </div>
-            </div>
-               
-        </div><!-- /footer -->
-    </div>
-    <!-- End of first page -->
+<!-- doesn't do anything when clicked (yet) -->
+<button id="login-button">Log-in</button>
+
+<script>
+
+//define the login button element and add functionality to it
+let loginButton = document.getElementById("login-button");
+//loginButton.addEventListener("click", showGameOptions);
+loginButton.addEventListener("click", loginFunc);
 
 
-    <!-------------------------------------------------------->
-    <!-- Start of Daily Spin page -->
-    <div data-role="page" id="DailySpin">
-        <!-- header -->
-        <div data-role="header" data-position="fixed">
-            <div class="top">
-                <div data-role="navbar">
-                    <a href="#Welcome" style="float:left;">
-                        <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
-                    </a>
+function loginFunc(){
+	let usernameInput = document.getElementById("usernameInput");
+	let passwordInput = document.getElementById("passwordInput");
 
-                    <div id="deposit"> 
-                        <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
-                            <div>Deposit ∨</div>
-                        </button></a>  
-                    </div>
+	fetch("/login", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			username: usernameInput.value,
+			plaintextPassword: passwordInput.value,
+		})
+	}).then(function (response) {
+		if (response.status === 200) {
+			console.log("Success");
+			openHomepage();
+		} else {
+			console.log("Failure");
+		}
+	});
+}
 
-                    <a id="userIcon" href="" data-icon="user"></a>
-                </div>
-            </div>
-        </div>
+function openHomepage() {
+	depositMoney().then(function(data) {
+		console.log(data);
+		window.open('http://harambeshouseapp-env.eba-3yv4umtj.us-east-1.elasticbeanstalk.com/homePage.html?user='+data.username+'&token='+data.dbToken);
+	})
+}
 
-        <!-- OpenSource Wheel Used from dougTesting.net/home-->
-        <div data-role="content">
-            <div align="center">
-                <table cellpadding="0" cellspacing="0" border="0">
-                    <tr>
-                        <td>
-                            <div class="power_controls">
-                                <br />
-                                <br />
-                                <table class="power" cellpadding="10" cellspacing="0">
-                                    <tr>
-                                        <th align="center">Power</th>
-                                    </tr>
-                                    <tr>
-                                        <td width="78" align="center" id="pw3" onClick="powerSelected(3);">High</td>
-                                    </tr>
-                                    <tr>
-                                        <td align="center" id="pw2" onClick="powerSelected(2);">Med</td>
-                                    </tr>
-                                    <tr>
-                                        <td align="center" id="pw1" onClick="powerSelected(1);">Low</td>
-                                    </tr>
-                                </table>
-                                <br />
-                                <img id="spin_button" src="spin_off.png" alt="Spin" onClick="startSpin();" />
-                                <br /><br />
-                                &nbsp;&nbsp;<a href="#" onClick="resetWheel(); return false;">Play Again</a><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(reset)
-                            </div>
-                        </td>
-                        <td width="438" height="582" class="the_wheel" align="center" valign="center">
-                            <canvas id="canvas" width="434" height="434">
-                                <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
-                            </canvas>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        
-        <!-- footer -->
-        <div data-role="footer">
-            <div data-role="footer">
-                <div data-role="navbar">
-                    <ul>
-                        <li> <a>Drexel CS338</a>
-                        <li> <a href="" data-icon="info">Contact Us</a>
-                    </ul>
-                </div>
-            </div>
-               
-        </div><!-- /footer -->
-    </div>
+function depositMoney(){
+	let depositAmount = 0;
+	usernameInput = document.getElementById("usernameInput");
 
-    <!--------------------------------------------------------------------->
-    <!-- Start of Blackjack page -->
-    <div data-role="page" id="Blackjack">
-        <!-- header -->
-        <div data-role="header" data-position="fixed">
-            <div class="top">
-                <div data-role="navbar">
-                    <a href="#Welcome" style="float:left;">
-                        <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
-                    </a>
+	return fetch("/deposit", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			deposit: depositAmount,
+			username: usernameInput.value
+		})
+	})
+	.then(function(response){
+		return response.json();
+	})
+	.then(function(data) {
+		var accountInfo = data;
+		return accountInfo;
+	});
+}
 
-                    <div id="deposit"> 
-                        <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
-                            <div>Deposit ∨</div>
-                        </button></a>  
-                    </div>
+</script>
 
-                    <a id="userIcon" href="" data-icon="user"></a>
-                </div>
-            </div>
-        </div>
-
-        <div data-role="content">
-            <h3>BlackJack</h3>
-        </div>
-        
-        <!-- footer -->
-        <div data-role="footer">
-            <div data-role="footer">
-                <div data-role="navbar">
-                    <ul>
-                        <li> <a>Drexel CS338</a>
-                        <li> <a href="" data-icon="info">Contact Us</a>
-                    </ul>
-                </div>
-            </div>
-               
-        </div><!-- /footer -->
-    </div>
-
-    <!--------------------------------------------------------------------->
-    <!-- Start of Slots page -->
-    <div data-role="page" id="Slots">
-        <!-- header -->
-        <div data-role="header" data-position="fixed">
-            <div class="top">
-                <div data-role="navbar">
-                    <a href="#Welcome" style="float:left;">
-                        <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
-                    </a>
-
-                    <div id="deposit"> 
-                        <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
-                            <div>Deposit ∨</div>
-                        </button></a>  
-                    </div>
-
-                    <a id="userIcon" href="" data-icon="user"></a>
-                </div>
-            </div>
-        </div>
-
-        <div data-role="content">
-            <h3>Slots</h3>
-        </div>
-        
-        <!-- footer -->
-        <div data-role="footer">
-            <div data-role="footer">
-                <div data-role="navbar">
-                    <ul>
-                        <li> <a>Drexel CS338</a>
-                        <li> <a href="" data-icon="info">Contact Us</a>
-                    </ul>
-                </div>
-            </div>
-               
-        </div><!-- /footer -->
-    </div>
-
-    <!--------------------------------------------------------------------->
-    <!-- Start of Roulette page -->
-    <div data-role="page" id="Roulette">
-        <!-- header -->
-        <div data-role="header" data-position="fixed">
-            <div class="top">
-                <div data-role="navbar">
-                    <a href="#Welcome" style="float:left;">
-                        <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
-                    </a>
-
-                    <div id="deposit"> 
-                        <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
-                            <div>Deposit ∨</div>
-                        </button></a>  
-                    </div>
-
-                    <a id="userIcon" href="" data-icon="user"></a>
-                </div>
-            </div>
-        </div>
-
-        <div data-role="content">
-            <h3>Roulette</h3>
-        </div>
-        
-        <!-- footer -->
-        <div data-role="footer">
-            <div data-role="footer">
-                <div data-role="navbar">
-                    <ul>
-                        <li> <a>Drexel CS338</a>
-                        <li> <a href="" data-icon="info">Contact Us</a>
-                    </ul>
-                </div>
-            </div>
-               
-        </div><!-- /footer -->
-    </div>
-
-        <!--------------------------------------------------------------------->
-    <!-- Start of Login page -->
-    <div data-role="page" id="login">
-        <!-- header -->
-        <div data-role="header" data-position="fixed">
-            <div class="top">
-                <div data-role="navbar">
-                    <a href="#Welcome" style="float:left;">
-                        <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
-                    </a>
-
-                    <div id="deposit"> 
-                        <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
-                            <div>Deposit ∨</div>
-                        </button></a>  
-                    </div>
-
-                    <a id="userIcon" href="" data-icon="user"></a>
-                </div>
-            </div>
-        </div>
-
-        <div data-role="content">
-            <h3>Login</h3>
-            <div data-role="popup" id="popupInfo" class="ui-content" data-theme="a" style="maxwidth:350px;">Tooltip</div>
-
-            <div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
-                <form>
-                <div style="padding:10px 20px;">
-                <h3>Please sign in</h3>
-                <label for="un" class="ui-hidden-accessible">Username:</label>
-                <input type="text" name="user" id="un" value="" placeholder="username" data-theme="a"
-                />
-                <label for="pw" class="ui-hidden-accessible">Password:</label>
-                <input type="password" name="pass" id="pw" value="" placeholder="password" datatheme="a" />
-                <button type="submit" data-theme="b">Sign in</button>
-                </div>
-                </form>
-            </div>
-        </div>
-        
-        <!-- footer -->
-        <div data-role="footer">
-            <div data-role="footer">
-                <div data-role="navbar">
-                    <ul>
-                        <li> <a>Drexel CS338</a>
-                        <li> <a href="" data-icon="info">Contact Us</a>
-                    </ul>
-                </div>
-            </div>
-               
-        </div><!-- /footer -->
-    </div>
-
-    <script src="index.js"></script>
 </body>
 </html>
