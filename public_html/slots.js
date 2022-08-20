@@ -34,6 +34,8 @@ spin.addEventListener("click", function(){
         return;
     }
     let bet = document.getElementById("bet").value;
+
+    document.getElementById("amount").innerText = bet;
     
     fetch('/spin', {
         method: 'POST',
