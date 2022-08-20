@@ -4,7 +4,7 @@
   "description": "��#\u0000 \u0000H\u0000a\u0000r\u0000a\u0000m\u0000b\u0000e\u0000s\u0000H\u0000o\u0000u\u0000s\u0000e\u0000\r\u0000 \u0000\r\u0000 \u0000O\u0000p\u0000e\u0000n\u0000S\u0000o\u0000u\u0000r\u0000c\u0000e\u0000 \u0000W\u0000h\u0000e\u0000e\u0000l\u0000 \u0000U\u0000s\u0000e\u0000d\u0000 \u0000f\u0000r\u0000o\u0000m\u0000 \u0000d\u0000o\u0000u\u0000g\u0000T\u0000e\u0000s\u0000t\u0000i\u0000n\u0000g\u0000.\u0000n\u0000e\u0000t\u0000/\u0000h\u0000o\u0000m\u0000e\u0000 \u0000a\u0000c\u0000t\u0000s\u0000 \u0000a\u0000s\u0000 \u0000o\u0000u\u0000r\u0000 \u0000d\u0000a\u0000i\u0000l\u0000y\u0000 \u0000s\u0000p\u0000i\u0000n\u0000 \u0000w\u0000h\u0000e\u0000e\u0000l\u0000.\u0000",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/seanpgillick/HarambesHouse#readme",
   "dependencies": {
-    "express": "^4.18.1"
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.19",
+    "pg": "^8.7.3"
   }
 }
