@@ -1,12 +1,67 @@
 <!DOCTYPE html>
 <html>
     <head>
-        
+        <meta charset="utf-8">
+        <title>Harambe's House Casino</title>
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="basic.css" />
+        <script type="text/javascript" src="Winwheel.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
     </head>
     <body>
-        <input type="button" value="spin" style="float:left;" id='spin' />
-        <canvas id="canvas" width="500" height="500"></canvas>
+        <div data-role="header" data-position="fixed">
+            <div class="top">
+                <div data-role="navbar">
+                    <a href="#Welcome" style="float:left;">
+                        <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
+                    </a>
 
+                    <div id="deposit"> 
+                        <a href="#Deposit"><button>
+                            <div id="balance">$0.00</div>
+                            <div>Deposit ∨</div>
+                        </button></a>  
+                    </div>
+
+                    <a id="userIcon" href="" data-icon="user"></a>
+                </div>
+            </div>
+        </div>
+        
+        <div data-role="content">
+            <div class ="float-container">
+                <div class="float-child-small">
+                    <div id="payout"><p>Winnings: $<span id="payout"></span></p></div>
+                    <form>
+                        <label for="bet">Bet Amount: $</label>
+                        <input type="number" value=".10" min="0.10" max="1000.00" step=".10" id="bet">
+                    </form>
+                    <input type="button" value="spin" style="float:left;" id='spin' />
+                    <br>
+                    <br>
+                    <br>
+                    <button id="demo-button" style="border: 2px solid blueviolet;">Demo</button>
+                </div>
+                <div id="game-container" class="float-child-large">
+                    <canvas id="canvas" width="500" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- footer -->
+        <div data-role="footer">
+            <div data-role="footer">
+                <div data-role="navbar">
+                    <ul>
+                        <li> <a>Drexel CS338</a>
+                        <li> <a href="" data-icon="info">Contact Us</a>
+                    </ul>
+                </div>
+            </div>
+               
+        </div><!-- /footer -->
         <script src="roulette.js"></script>
     </body>
 </html>

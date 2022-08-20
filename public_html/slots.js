@@ -1,3 +1,6 @@
+//adapted from prior classwork
+
+
 let spin = document.getElementById("spin-button");
 let demo = document.getElementById("demo-button");
 let balElement = document.getElementById("balance");
@@ -194,14 +197,14 @@ spin.addEventListener("click", function(){
 demo.addEventListener("click", function(){
     demo.disabled = true;
 
-    let bet = document.getElementById("bet").value;
+    let bet = 0;
     
     fetch('/spin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({"bet": 0, "user": username, "dbToken": token})
+        body: JSON.stringify({"bet": bet, "user": username, "dbToken": token})
     })
     .then(response => response.json())
     .then(async function(data){
