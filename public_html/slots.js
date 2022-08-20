@@ -167,7 +167,7 @@ spin.addEventListener("click", function(){
             .then(async function(data){
                 let iWin = document.createElement("img");
                 iWin.src = "symbols/win.png";
-                document.getElementById("payout").innerText = data.payout;
+                document.getElementById("payout").innerText = data.payout - bet;
                 if(data.payout > 0) {
                     for(var x = 0; x < 10; x++){
                         for(var i = 0; i < data.lines.length; i++){
