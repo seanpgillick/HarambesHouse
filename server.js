@@ -9,14 +9,6 @@ app.use(express.static("public_html"));
 ////////////Database/////////////////
 var mysql = require('mysql');
 
-var connection = mysql.createConnection({
-    host     : "awseb-e-j9he8xpf7w-stack-awsebrdsdatabase-yc6x43yxbvqs.csom7akhuxci.us-east-1.rds.amazonaws.com",
-    user     : "harambe",
-    password : "password!",
-    port     : "3306",
-    database : "Harambe"
-});
-
 app.get("/", function (req, res){
     res.send("It worked!");
 })
