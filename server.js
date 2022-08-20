@@ -24,3 +24,5 @@ app.listen(port, () => {
 app.get('/', (req, res) => {
     res.send("Welcome to the home page")
 });
+
+module .export = app; 
