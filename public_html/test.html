@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Gorilla Kingdom Casino</title>
+	<!-- apply CSS styles defined in style.css -->
+	<!-- <link rel="stylesheet" type="text/css" href="login_style.css"> -->
+</head>
+<body>
+
+<!-- <h1><u><b>Welcome to GORILLA KINGDOM</b></u></h1> -->
+
+<!-- <img class="kingdom_title_img" src="Gorilla_Kingdom_Thumbnail_Logo.png"/>
+<img class="gorilla_background_img" src="Gorrila_In_Jungle.jpg" /> -->
+
+<h2>Please Log-in:</h2>
+
+<div id=username>
+	<label for="username">Username:</label>
+	<input id="usernameInput" type="text">
+</div>
+
+<div id=password>
+	<label for="password">Password:</label>
+	<input id="passwordInput" type="password">
+</div>
+
+<!-- doesn't do anything when clicked (yet) -->
+<button id="login-button">Log-in</button>
+
+<!-- we'll append to this later -->
+<div id="games-container"></div>
+
+<script>
+
+//create a flag to check if the log-in button was already clicked
+let alreadyClicked;
+alreadyClicked = false;
+
+//define the login button element and add functionality to it
+let loginButton = document.getElementById("login-button");
+//loginButton.addEventListener("click", showGameOptions);
+loginButton.addEventListener("click", loginFunc);
+
+let blackjackGame;
+let slotsGame;
+let horseRacingGame;
+
+function betSizing(container) {
+	let betHeader = document.createElement("h3");
+	betHeader.textContent = "Deposit Money Here:";
+
+	let depositBox = document.createElement("INPUT");
+	depositBox.setAttribute("type", "number");
+	depositBox.setAttribute("min", 1);
+	depositBox.setAttribute("id", "depositBox");
+	depositBox.value = 0.00;
+
+	container.appendChild(betHeader);
+	container.appendChild(depositBox);
+}
+
+function loginFunc(){
+	let usernameInput = document.getElementById("usernameInput");
+	let passwordInput = document.getElementById("passwordInput");
+
+	fetch("/login", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			username: usernameInput.value,
+			plaintextPassword: passwordInput.value,
+		})
+	}).then(function (response) {
+		if (response.status === 200) {
+			console.log("Success");
+			showGameOptions();
+		} else {
+			console.log("Failure");
+		}
+	});
+}
+
+function showGameOptions() {
+	if (alreadyClicked == false) {
+		let container = document.getElementById("games-container");
+
+		betSizing(container);
+
+    let gameHeader = document.createElement("h3");
+    gameHeader.textContent = "Pick Your Game!";
+
+    let divBlackJackOption = document.createElement("div");
+    let divSlotOption = document.createElement("div");
+		let divHorseRacingOption = document.createElement("div");
+
+    divBlackJackOption.textContent = "1) Blackjack";
+    divSlotOption.textContent = "2) Casino Slots";
+		divHorseRacingOption.textContent = "3) Horse Racing";
+
+		//set IDs for the newly created elements
+		divBlackJackOption.setAttribute('id','Blackjack');
+		divSlotOption.setAttribute('id','Slots');
+		divHorseRacingOption.setAttribute('id','HorseRacing');
+
+		//add styling to space out the divs
+    divSlotOption.style.margin = "5px 20px";
+
+		divBlackJackOption.style.border = "1px darkblue solid";
+		divBlackJackOption.style.padding = "2px";
+		divBlackJackOption.style.display = "inline";
+
+		divSlotOption.style.border = "1px darkblue solid";
+		divSlotOption.style.padding = "2px";
+		divSlotOption.style.display = "inline";
+
+		divHorseRacingOption.style.border = "1px darkblue solid";
+		divHorseRacingOption.style.padding = "2px";
+		divHorseRacingOption.style.display = "inline";
+
+    // divBlackJackOption.classList.add("game-divs");
+    container.appendChild(gameHeader);
+    container.appendChild(divBlackJackOption);
+    container.appendChild(divSlotOption);
+		container.appendChild(divHorseRacingOption);
+		alreadyClicked = true;
+
+    // //define the new elements
+		blackjackGame = document.getElementById("Blackjack");
+		slotsGame = document.getElementById("Slots");
+		horseRacingGame = document.getElementById("HorseRacing");
+
+		blackjackGame.addEventListener("click", openBlackjack);
+		slotsGame.addEventListener("click", openSlots);
+		horseRacingGame.addEventListener("click", openHorseRacing);
+
+	}
+else {
+	return
+}
+}
+
+function openBlackjack() {
+	depositMoney().then(function(data) {
+		console.log(data);
+		window.open('http://gorillakingdom-env-1.eba-yrqq4xm3.us-east-2.elasticbeanstalk.com/blackjack.html?user='+data.username+'&token='+data.dbToken);
+	})
+}
+
+function openSlots() {
+	depositMoney().then(function(data) {
+		console.log(data);
+		window.open('http://gorillakingdom-env-1.eba-yrqq4xm3.us-east-2.elasticbeanstalk.com/spin.html?user='+data.username+'&token='+data.dbToken);
+	})
+}
+
+function openHorseRacing() {
+	depositMoney().then(function(data) {
+		console.log(data);
+		window.open('http://gorillakingdom-env-1.eba-yrqq4xm3.us-east-2.elasticbeanstalk.com/horse_racing.html?user='+data.username+'&token='+data.dbToken);
+	})
+}
+
+function depositMoney(){
+	let depositAmount = document.getElementById("depositBox").value;
+	usernameInput = document.getElementById("usernameInput");
+
+	return fetch("/deposit", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			deposit: depositAmount,
+			username: usernameInput.value
+		})
+	})
+	.then(function(response){
+		return response.json();
+	})
+	.then(function(data) {
+		var accountInfo = data;
+		return accountInfo;
+	});
+}
+
+</script>
+
+</body>
+</html>
