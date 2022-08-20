@@ -1,0 +1,60 @@
+.container{
+    display: flex;
+	text-align: center;
+	vertical-align: middle;
+}
+.flex-item{
+    flex-grow: 1;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#form {
+    background-color: #FFF;
+    height: 600px;
+    width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 0px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 0px;
+    text-align:center;
+}
+
+.playButtons {
+    width: 20% !important;
+    vertical-align: middle !important;
+    text-align: center !important;
+    margin: 0 auto !important;
+}
+
+.top {
+    margin:1%;
+    display: block;
+    text-align:center;
+
+}
+
+#logo, #deposit, #userIcon {
+    background-color: transparent;
+    vertical-align: middle;
+}
+
+#deposit {
+    float:right;
+    margin-right: 1%;
+    margin-left: 1%;
+}
+
+#userIcon {
+    margin-top: 2%;
+    height: 2%;
+    width: 4%;
+    float:right;
+}
+
+#logo {
+    float:left;
+    width: 10%;
+}
