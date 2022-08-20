@@ -1,4 +1,4 @@
-//adapted from prior classwork
+//adapted from and improved upon from prior classwork 
 
 
 let spin = document.getElementById("spin-button");

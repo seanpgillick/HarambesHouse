@@ -2,24 +2,42 @@
 <html>
 <head>
 	<meta charset="utf-8">
+        <title>Harambe's House Casino</title>
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="basic.css" />
+        <script type="text/javascript" src="Winwheel.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 	<title>Sign in</title>
 </head>
 <body>
+	<div data-role="page" id="Welcome">
+        <!-- header -->
+        <div data-role="header" data-position="fixed">
+            <div class="top">
+                <div data-role="navbar">
+                    <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
+                </div>
+            </div>
+        </div>
+<h2 style="text-align: center;">Please Log-in:</h2>
 
-<h2>Please Log-in:</h2>
-
-<div id=username>
-	<label for="username">Username:</label>
-	<input id="usernameInput" type="text">
+<div style="width: 66%;">
+	<div id=username>
+		<label for="username">Username:</label>
+		<input id="usernameInput" type="text">
+	</div>
+	
+	<div id=password>
+		<label for="password">Password:</label>
+		<input id="passwordInput" type="password">
+	</div>
+	
+	<!-- doesn't do anything when clicked (yet) -->
+	<button id="login-button">Log-in</button>
 </div>
 
-<div id=password>
-	<label for="password">Password:</label>
-	<input id="passwordInput" type="password">
-</div>
-
-<!-- doesn't do anything when clicked (yet) -->
-<button id="login-button">Log-in</button>
 
 <script>
 
