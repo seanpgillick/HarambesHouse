@@ -55,7 +55,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    balElement1.innerText = parseFloat(data.balance).toFixed(2);
+                    balElement1.innerText = '$'+parseFloat(data.balance).toFixed(2);
                 });
             }
     
@@ -146,7 +146,7 @@
         </div>
 
         <script>
-            let balElement = document.getElementById("balanceWheel");
+            let balElement2 = document.getElementById("balanceWheel");
             let username = getParameterByName('user');
             let token = getParameterByName('token');
             urlEnd = "?user="+username+"&token="+token;
@@ -167,7 +167,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    balElement.innerText = '$'+parseFloat(data.balance).toFixed(2);
+                    balElement2.innerText = '$'+parseFloat(data.balance).toFixed(2);
                 });
             }
     
