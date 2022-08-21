@@ -114,5 +114,43 @@ function resetWheel()
 function alertPrize(indicatedSegment)
 {
     // Do basic alert of the segment text. You would probably want to do something more interesting with this information.
-    alert("You have won " + indicatedSegment.text);
+    console.log((indicatedSegment.text).substring(1));
+    let dailyWin = (indicatedSegment.text).substring(1);
+
+    fetch("/dailySpin", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+            user : username,
+            dbToken : token,
+            winAmount : dailyWin
+
+		})
+	})
+    .then(response => response.json())
+    .then(data => {
+        alert("You have won " + indicatedSegment.text);
+        getBalance(username,token)
+    });
+    
+}
+
+
+function getBalance(user, dbToken){
+    fetch("/getBal", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: user,
+            token: dbToken
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        balElement.innerText = data.balance;
+    });
 }
