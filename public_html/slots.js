@@ -23,7 +23,7 @@ function getBalance(user, dbToken){
     })
     .then(response => response.json())
     .then(data => {
-        balElement.innerText = data.balance;
+        balElement.innerText = "$" + parseFloat(data.balance).toFixed(2);
     });
 }
 
@@ -167,7 +167,7 @@ spin.addEventListener("click", function(){
             .then(async function(data){
                 let iWin = document.createElement("img");
                 iWin.src = "symbols/win.png";
-                document.getElementById("payout").innerText = data.payout - bet;
+                document.getElementById("payout").innerText = parseFloat(data.payout - bet).toFixed(2);
                 if(data.payout > 0) {
                     for(var x = 0; x < 10; x++){
                         for(var i = 0; i < data.lines.length; i++){
@@ -183,7 +183,7 @@ spin.addEventListener("click", function(){
                         }
                     }
                 }
-                document.getElementById("balance").innerText = parseFloat(data.dbBalance).toFixed(2);
+                document.getElementById("balance").innerText = "$"+parseFloat(data.dbBalance).toFixed(2);
             })
             .catch((error) => {
                 console.error('Error', error);
@@ -342,7 +342,7 @@ demo.addEventListener("click", function(){
                         }
                     }
                 }
-                document.getElementById("balance").innerText = parseFloat(data.dbBalance).toFixed(2);
+                document.getElementById("balance").innerText = "$"+parseFloat(data.dbBalance).toFixed(2);
             })
             .catch((error) => {
                 console.error('Error', error);

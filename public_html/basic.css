@@ -561,3 +561,25 @@ button {
 	  .dropdown a:hover {background-color: #ddd;}
 	  
 	  .show {display: block;}
+
+.float-child-third {
+		width: 33%;
+		float: left;
+		padding: 20px;
+}  
+
+.float-child-right {
+	width: 33%;
+	float: left;
+	padding: 20px;
+	padding-left: 10%;
+}  
+canvas {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+
+}
+
