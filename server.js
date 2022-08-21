@@ -302,6 +302,30 @@ app.post("/getBal", function (req, res) {
     });
 });
 
+app.post("/dailySpin", function (req, res) {
+    let dbBal;
+
+    connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.user, req.body.dbToken], function(err, result){
+        if (err) {
+            console.error('Failed to pull balance: ' + err);
+            res.status(500).send();
+        }
+
+        if (result.length > 0){
+            dbBal = parseFloat(result[0]["balance"]); 
+            let newBal = (dbBal+parseFloat(req.body.winAmount));
+
+            connection.query("Update accountInfo SET balance = ? WHERE username = ?", [newBal, req.body.user], function(err, result){
+                if (err) {
+                    console.error('Failed to update daily spin results: ' + err);
+                    res.status(500).send();
+                }
+            });
+            res.status(200).send({"balance" : newBal});
+        }
+    });
+});
+
 app.post("/spin", function(req, res) {
     connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.user, req.body.dbToken], function(err, result){
         if(err) {
