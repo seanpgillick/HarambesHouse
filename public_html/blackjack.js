@@ -112,6 +112,7 @@ document.getElementById("standButton").disabled = true;
 
 //Start the game
 document.getElementById("startGame").addEventListener("click", function () {
+    document.getElementById("payout").innerText="Payout: ";
         betVal = betElement.value;
 	fetch("/blackjack", {
 		method: "POST",
@@ -133,6 +134,7 @@ document.getElementById("startGame").addEventListener("click", function () {
             if (data.wasBlackjackHit == true){
                 printUserHand(data.userCards, data.userSum);
                 printDealerHand(data.dealerCards, data.dealerSum);
+                document.getElementById("payout").innerText+=("$"+data.payout);
             }
             else{
                 document.getElementById("hitButton").disabled = false;
@@ -166,6 +168,7 @@ document.getElementById("hitButton").addEventListener("click", function () {
             printDealerHand(data.dealerCards, data.dealerSum);
             document.getElementById("hitButton").disabled = true;
             document.getElementById("standButton").disabled = true;
+            document.getElementById("payout").innerText+=("$"+data.payout);
         }
     });
 });
@@ -189,5 +192,6 @@ document.getElementById("standButton").addEventListener("click", function () {
         printDealerHand(data.dealerCards, data.dealerSum);
         document.getElementById("hitButton").disabled = true;
         document.getElementById("standButton").disabled = true;
+        document.getElementById("payout").innerText+=("$"+data.payout);
     });
 });

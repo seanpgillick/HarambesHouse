@@ -109,6 +109,15 @@ app.post("/deposit", function (req, res) {
     });
 });
 
+let cards;
+let userCards;
+let userVals;
+let userSum;
+let dealerCards;
+let dealerVals;
+let dealerSum;
+let blackjackPayout = 0;
+let gamePayout;
 ////////////////////////////////BLACKJACK////////////////////////////////
 app.post("/blackjack", function (req, res) { 
     //Determine which putton the user clicked
@@ -170,11 +179,13 @@ app.post("/blackjack", function (req, res) {
                 let wasBlackjackHit = false;
                 if ( (userVals[0] == 11 && userVals[1] == 10) || (userVals[0] == 10 && userVals[1] == 11 ) ){
                     dbBalance += ( Number(betAmount) * 1.5 );
+                    blackjackPayout += ( Number(betAmount) * 1.5 );
                     wasBlackjackHit = true;
                 }
 
                 if ( (dealerVals[0] == 11 && dealerVals[1] == 10 ) || (dealerVals[0] == 10 && dealerVals[1] == 11) ){
                     dbBalance -= Number(betAmount);
+                    blackjackPayout -= ( Number(betAmount) );
                     wasBlackjackHit = true;
                 }
 
@@ -191,7 +202,7 @@ app.post("/blackjack", function (req, res) {
                 userSum = userVals.reduce((a, b) => a + b, 0);
                 dealerSum = dealerVals.reduce((a, b) => a + b, 0);
 
-                let cardReturn = {"userCards": userCards, "userSum": userSum, "dSumStart" : dSumStart, "dealerCards": dealerCards, "dealerSum": dealerSum, "wasBlackjackHit": wasBlackjackHit, "validBet":true};
+                let cardReturn = {"userCards": userCards, "userSum": userSum, "dSumStart" : dSumStart, "dealerCards": dealerCards, "dealerSum": dealerSum, "wasBlackjackHit": wasBlackjackHit, "validBet":true, "payout": blackjackPayout};
                 res.status(200).json(cardReturn);
             }
             else if( action == "hit"){
@@ -222,8 +233,8 @@ app.post("/blackjack", function (req, res) {
                         delete cards[cardNum];
                     }
                 }
-                gameResults(userSum, dealerSum, betAmount, dbBalance, req.body.user);
-                let hitReturn = {"userCards":userCards, "userSum": userSum, "dealerCards": dealerCards, "dealerSum": dealerSum};
+                gamePayout = gameResults(userSum, dealerSum, betAmount, dbBalance, req.body.user);
+                let hitReturn = {"userCards":userCards, "userSum": userSum, "dealerCards": dealerCards, "dealerSum": dealerSum, "payout": gamePayout};
                 res.status(200).json(hitReturn);
             }
             else if ( action = "stand"){
@@ -240,18 +251,20 @@ app.post("/blackjack", function (req, res) {
                     dealerSum = dealerVals.reduce((a, b) => a + b, 0);
                     delete cards[cardNum];
                 }
-                gameResults(userSum, dealerSum, betAmount, dbBalance, req.body.user);
-                let standReturn = {"dealerCards": dealerCards, "dealerSum": dealerSum};
+                gamePayout = gameResults(userSum, dealerSum, betAmount, dbBalance, req.body.user);
+                let standReturn = {"dealerCards": dealerCards, "dealerSum": dealerSum, "payout": gamePayout};
                 res.status(200).json(standReturn);
             }
         }
 
         function gameResults(userSum, dealerSum, bet, balance, username){
+            let payout = 0;
             bet = Number(bet);
             balance = Number(balance);
             //Dealer Busts and Users dont - Users win
             if (dealerSum > 21 && userSum <= 21){
                 balance += bet;
+                payout+=bet;
             }
             //Both the dealer and user bust - No payout or loss
             if(dealerSum > 21 && userSum > 21){
@@ -260,14 +273,17 @@ app.post("/blackjack", function (req, res) {
             //The user busts but the dealer didn't - User loses
             if(dealerSum <= 21 && userSum > 21){
                 balance -= bet;
+                payout-=bet;
             }
             //Nobody busts, user > dealer - User wins
             if (userSum > dealerSum && userSum <= 21){
                 balance += bet;
+                payout+=bet;
             }
             //Nobody busts, dealer > user - User loses
             if(userSum <= dealerSum && dealerSum <= 21){
                 balance -= bet;
+                payout-=bet;
             }
             //tie
             if (userSum == dealerSum && dealerSum <= 21){
@@ -280,6 +296,7 @@ app.post("/blackjack", function (req, res) {
                     res.status(500).send();
                 }
             });
+            return payout;
         }
 
     });
