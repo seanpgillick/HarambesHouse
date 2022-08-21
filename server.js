@@ -130,17 +130,17 @@ app.post("/blackjack", function (req, res) {
             let cardVals = {"A":11, "2": 2, "3": 3, "4":4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10};
              
             if (action == "startGame"){
-                userCards = [];
-                userVals = [];
-                userSum = 0;
-                dealerCards = [];
-                dealerVals = [];
-                dealerSum = 0;
+                let userCards = [];
+                let userVals = [];
+                let userSum = 0;
+                let dealerCards = [];
+                let dealerVals = [];
+                let dealerSum = 0;
                  
                 //User has started a game
                 //Need to generate and return 4 cards, 1 of the dealers card will be hidden to start.
                 //Once a card as been used, remove it from the pile.
-                cards = {0:"AS", 1: "2S", 2: "3S", 3: "4S", 4: "5S", 5: "6S", 6: "7S", 7: "8S", 8: "9S", 9: "10S", 10: "JS", 11: "QS", 12: "KS",
+                let cards = {0:"AS", 1: "2S", 2: "3S", 3: "4S", 4: "5S", 5: "6S", 6: "7S", 7: "8S", 8: "9S", 9: "10S", 10: "JS", 11: "QS", 12: "KS",
                          13:"AD", 14: "2D", 15: "3D", 16: "4D", 17: "5D", 18: "6D", 19: "7D", 20: "8D", 21: "9D", 22: "10D", 23: "JD", 24: "QD", 25: "KD",
                          26:"AH", 27: "2H", 28: "3H", 29: "4H", 30: "5H", 31: "6H", 32: "7H", 33: "8H", 34: "9H", 35: "10H", 36: "JH", 37: "QH", 38: "KH",
                          39:"AC", 40: "2C", 41: "3C", 42: "4C", 43: "5C", 44: "6C", 45: "7C", 46: "8C", 47: "9C", 48: "10C", 49: "JC", 50: "QC", 51: "KC"}
