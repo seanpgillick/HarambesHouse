@@ -28,7 +28,7 @@ function getBalance(user, dbToken){
     .then(data => {
         console.log("GET BAL");
 
-        balElement.innerText = data.balance;
+        balElement.innerText = '$'+parseFloat(data.balance).toFixed(2);
     });
 }
 
