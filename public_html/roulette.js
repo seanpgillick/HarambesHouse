@@ -115,7 +115,7 @@ function drawRouletteWheel() {
     } 
 
     //Arrow
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = "#ADD8E6";
     ctx.beginPath();
     ctx.moveTo(250 - 4, 250 - (outsideRadius + 5));
     ctx.lineTo(250 + 4, 250 - (outsideRadius + 5));
