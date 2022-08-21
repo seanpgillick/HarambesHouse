@@ -13,6 +13,33 @@ let token = getParameterByName('token');
 // get starting bal
 getBalance(username,token);
 
+function depositOpen() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function deposit() {
+    let depositAmount = document.getElementById("depositText").value;
+
+    return fetch("/deposit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            deposit: depositAmount,
+            username: username
+        })
+    })
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data) {
+        getBalance(username, token);
+        location.reload();
+
+    });
+}
+
 function getBalance(user, dbToken){
     fetch("/getBal", {
         method: "POST",

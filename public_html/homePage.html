@@ -20,14 +20,18 @@
                 <div data-role="navbar">
                     <img id="logo" src="logo.png" alt="Harambe's House" style="width:300px;">
 
+                    <a id="userIcon" href="http://harambeshouseapp-env.eba-3yv4umtj.us-east-1.elasticbeanstalk.com/index.html" data-icon="user"></a>
                     <div id="deposit"> 
-                        <a href="#Deposit"><button>
+                        <button onclick="depositOpen()">
                             <div id="homeBalance">$0.00</div>
                             <div>Deposit ∨</div>
-                        </button></a>  
+                        </button>
+                        <div id="myDropdown" class="dropdown-content">
+                            <h4>How much would you like to deposit?</h4>
+                            <textarea id="depositText" rows="1" cols="30"></textarea>
+                            <button onclick="deposit()">Deposit</button>
+                        </div>
                     </div>
-
-                    <a id="userIcon" href="http://harambeshouseapp-env.eba-3yv4umtj.us-east-1.elasticbeanstalk.com/index.html" data-icon="user"></a>
                 </div>
             </div>
         </div>
@@ -38,6 +42,33 @@
             let user = getParameterByName('user');
             let dbToken = getParameterByName('token');
             let urlEnd = "?user="+user+"&token="+dbToken;
+
+            function depositOpen() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+
+            function deposit() {
+                let depositAmount = document.getElementById("depositText").value;
+
+                return fetch("/deposit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        deposit: depositAmount,
+                        username: user
+                    })
+                })
+                .then(function(response){
+                    return response.json();
+                })
+                .then(function(data) {
+                    getBalance(user, dbToken);
+                    location.reload();
+
+                });
+            }
     
             // get starting bal
             getBalance(user,dbToken);
