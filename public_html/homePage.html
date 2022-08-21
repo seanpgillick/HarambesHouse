@@ -22,7 +22,7 @@
 
                     <div id="deposit"> 
                         <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
+                            <div id="homeBalance">$0.00</div>
                             <div>Deposit ∨</div>
                         </button></a>  
                     </div>
@@ -34,7 +34,7 @@
         <!-- /header -->
 
         <script>
-            let balElement = document.getElementById("balance");
+            let balElement = document.getElementById("homeBalance");
             let username = getParameterByName('user');
             let token = getParameterByName('token');
             let urlEnd = "?user="+username+"&token="+token;
@@ -137,7 +137,7 @@
 
                     <div id="deposit"> 
                         <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
+                            <div id="balanceWheel">$0.00</div>
                             <div>Deposit ∨</div>
                         </button></a>  
                     </div>
@@ -146,6 +146,26 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            balElement = document.getElementById("balanceWheel");
+            username = getParameterByName('user');
+            token = getParameterByName('token');
+            urlEnd = "?user="+username+"&token="+token;
+    
+            // get starting bal
+            getBalance(username,token);
+    
+            //access query string
+            function getParameterByName(name, url = window.location.href) {
+                name = name.replace(/[\[\]]/g, '\\$&');
+                var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, ' '));
+            }
+        </script>
 
         <!-- OpenSource Wheel Used from dougTesting.net/home-->
         <div data-role="content">
