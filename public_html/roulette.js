@@ -131,8 +131,29 @@ function drawRouletteWheel() {
 
 let betColor = "none";
 let betNumber = document.getElementById("bet-number").value;
+let bet;
 
 function spin() {
+    bet = document.getElementById("bet").value;
+    console.log(bet);
+    fetch(`/rouletteSpin/?bet=${bet}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "user": username, "dbToken": token
+        }),
+    })
+    .then(response => response.json())
+    .then(async function(data){
+        document.getElementById("payout").innerText = parseFloat(data.payout - bet).toFixed(2);
+        document.getElementById("balance").innerText = "$"+parseFloat(data.dbBalance).toFixed(2);
+    })
+    .catch((error) => {
+        console.error('Error', error);
+    })
     document.getElementById("spin-button").disabled = true;
     red.disabled = true;
     black.disabled = true;
@@ -167,15 +188,48 @@ function stopRotateWheel() {
 
   console.log("Color:" + betColor);
   console.log("Number:" + betNumber);
-  if (index % 2 == 0 && betColor == "red") {
-      console.log("red win!");
-  }
-  else if (index % 2 != 0 && betColor == "black") {
-      console.log("black win!");
+  if ((index % 2 == 0 && betColor == "red") || (index % 2 != 0 && betColor == "black")) {
+    fetch(`/colorWin/?bet=${bet}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "user": username, "dbToken": token
+        }),
+    })
+    .then(response => response.json())
+    .then(async function(data){
+        document.getElementById("payout").innerText = parseFloat(data.payout - bet).toFixed(2);
+        document.getElementById("balance").innerText = "$"+parseFloat(data.dbBalance).toFixed(2);
+        console.log("Some win");
+    })
+    .catch((error) => {
+        console.error('Error', error);
+    })
   }
   else if (betNumber == parseInt(options[index])) {
-      console.log("number win!");
+    fetch(`/numberWin/?bet=${bet}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            "user": username, "dbToken": token
+        }),
+    })
+    .then(response => response.json())
+    .then(async function(data){
+        document.getElementById("payout").innerText = parseFloat(data.payout - bet).toFixed(2);
+        document.getElementById("balance").innerText = "$"+parseFloat(data.dbBalance).toFixed(2);
+    })
+    .catch((error) => {
+        console.error('Error', error);
+    })
   }
+
   ctx.fillText(text, 250 - ctx.measureText(text).width / 2, 250 + 10);
   ctx.restore();
   document.getElementById("spin-button").disabled = false;
