@@ -34,13 +34,13 @@
         <!-- /header -->
 
         <script>
-            let balElement = document.getElementById("homeBalance");
-            let username = getParameterByName('user');
-            let token = getParameterByName('token');
-            let urlEnd = "?user="+username+"&token="+token;
+            let balElement1 = document.getElementById("homeBalance");
+            let user = getParameterByName('user');
+            let dbToken = getParameterByName('token');
+            let urlEnd = "?user="+user+"&token="+dbToken;
     
             // get starting bal
-            getBalance(username,token);
+            getBalance(user,dbToken);
     
             function getBalance(user, dbToken){
                 fetch("/getBal", {
@@ -55,9 +55,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("GET BAL");
-    
-                    balElement.innerText = data.balance;
+                    balElement1.innerText = parseFloat(data.balance).toFixed(2);
                 });
             }
     
@@ -148,13 +146,30 @@
         </div>
 
         <script>
-            balElement = document.getElementById("balanceWheel");
-            username = getParameterByName('user');
-            token = getParameterByName('token');
+            let balElement = document.getElementById("balanceWheel");
+            let username = getParameterByName('user');
+            let token = getParameterByName('token');
             urlEnd = "?user="+username+"&token="+token;
     
             // get starting bal
             getBalance(username,token);
+
+            function getBalance(user, dbToken){
+                fetch("/getBal", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: user,
+                        token: dbToken
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    balElement.innerText = '$'+parseFloat(data.balance).toFixed(2);
+                });
+            }
     
             //access query string
             function getParameterByName(name, url = window.location.href) {
