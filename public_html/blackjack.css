@@ -26,7 +26,7 @@
     width: 20% !important;
     vertical-align: middle !important;
     text-align: center !important;
-    margin: 0 auto !important;
+    margin: 1% auto !important;
 }
 
 .top {
@@ -89,3 +89,7 @@
   .dropdown a:hover {background-color: #ddd;}
   
   .show {display: block;}
+
+  #payout{
+    margin: 4%;
+  }
