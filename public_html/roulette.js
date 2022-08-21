@@ -1,5 +1,6 @@
 let red = document.getElementById("red-button");
 let black = document.getElementById("black-button");
+let betNum = document.getElementById("bet-number")
 let demo = document.getElementById("demo-button");
 let balElement = document.getElementById("balance");
 const urlParams = new URLSearchParams(window.location.search);
@@ -128,10 +129,15 @@ function drawRouletteWheel() {
   }
 }
 
+let betColor = "none";
+let betNumber = document.getElementById("bet-number").value;
+
 function spin() {
     document.getElementById("spin-button").disabled = true;
     red.disabled = true;
     black.disabled = true;
+    betNumber = document.getElementById("bet-number").value;
+    betNum.disabled = true;
   spinAngleStart = Math.random() * 10 + 10;
   spinTime = 0;
   spinTimeTotal = Math.random() * 3 + 4 * 1000;
@@ -158,11 +164,25 @@ function stopRotateWheel() {
   ctx.save();
   ctx.font = 'bold 30px Helvetica, Arial';
   var text = options[index]
+
+  console.log("Color:" + betColor);
+  console.log("Number:" + betNumber);
+  if (index % 2 == 0 && betColor == "red") {
+      console.log("red win!");
+  }
+  else if (index % 2 != 0 && betColor == "black") {
+      console.log("black win!");
+  }
+  else if (betNumber == parseInt(options[index])) {
+      console.log("number win!");
+  }
   ctx.fillText(text, 250 - ctx.measureText(text).width / 2, 250 + 10);
   ctx.restore();
   document.getElementById("spin-button").disabled = false;
   red.disabled = false;
   black.disabled = false;
+  betNum.disabled = false;
+  betColor = "";
 }
 
 function easeOut(t, b, c, d) {
@@ -172,9 +192,6 @@ function easeOut(t, b, c, d) {
 }
 
 drawRouletteWheel();
-
-let betColor = "none";
-let betNumber = document.getElementById("bet-number");
 
 red.addEventListener("click", function() {
     betColor = "red";
