@@ -1,7 +1,32 @@
+let red = document.getElementById("red-button");
+let black = document.getElementById("black-button");
+let demo = document.getElementById("demo-button");
+let balElement = document.getElementById("balance");
+const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get('user');
+const token = urlParams.get('token');
+
+getBalance(username,token);
+
+function getBalance(user, dbToken){
+    fetch("/getBal", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: user,
+            token: dbToken
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        balElement.innerText = $+ parseFloat(data.balance).toFixed(2);
+    });
+}
+
 //CODE for Roulette.js adapted from https://codepen.io/barney-parker/pen/OPyYqy, user Barney Parker
 //See more here https://codepen.io/barney-parker
-
-
 
 var options = ["0", "32", "15", "19", "4", "21", "2", "25", "17", "34", "6", "27", "13", "36", "11", "30", "8", "23", "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18", "29", "7", "28", "12", "35", "3", "26"];
 
@@ -15,7 +40,7 @@ var spinTimeTotal = 0;
 
 var ctx;
 
-document.getElementById("spin").addEventListener("click", spin);
+document.getElementById("spin-button").addEventListener("click", spin);
 
 function byte2Hex(n) {
   var nybHexString = "0123456789ABCDEF";
@@ -62,7 +87,7 @@ function drawRouletteWheel() {
       }
       else if (i%2==0)
       {
-          ctx.fillStyle = 'red';
+          ctx.fillStyle = '#972a27';
       }
       else
       { 
@@ -79,7 +104,7 @@ function drawRouletteWheel() {
       ctx.shadowOffsetY = -1;
       ctx.shadowBlur    = 0;
       ctx.shadowColor   = "rgb(220,220,220)";
-      ctx.fillStyle = "black";
+      ctx.fillStyle = "white";
       ctx.translate(250 + Math.cos(angle + arc / 2) * textRadius, 
                     250 + Math.sin(angle + arc / 2) * textRadius);
       ctx.rotate(angle + arc / 2 + Math.PI / 2);
@@ -104,6 +129,9 @@ function drawRouletteWheel() {
 }
 
 function spin() {
+    document.getElementById("spin-button").disabled = true;
+    red.disabled = true;
+    black.disabled = true;
   spinAngleStart = Math.random() * 10 + 10;
   spinTime = 0;
   spinTimeTotal = Math.random() * 3 + 4 * 1000;
@@ -132,6 +160,9 @@ function stopRotateWheel() {
   var text = options[index]
   ctx.fillText(text, 250 - ctx.measureText(text).width / 2, 250 + 10);
   ctx.restore();
+  document.getElementById("spin-button").disabled = false;
+  red.disabled = false;
+  black.disabled = false;
 }
 
 function easeOut(t, b, c, d) {
@@ -141,3 +172,18 @@ function easeOut(t, b, c, d) {
 }
 
 drawRouletteWheel();
+
+let betColor = "none";
+let betNumber = document.getElementById("bet-number");
+
+red.addEventListener("click", function() {
+    betColor = "red";
+    red.disabled = true;
+    black.disabled = false;
+});
+
+black.addEventListener("click", function() {
+    betColor = "black";
+    black.disabled = true;
+    red.disabled = false;
+});

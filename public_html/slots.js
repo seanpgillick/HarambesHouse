@@ -23,7 +23,7 @@ function getBalance(user, dbToken){
     })
     .then(response => response.json())
     .then(data => {
-        balElement.innerText = data.balance;
+        balElement.innerText = $+ parseFloat(data.balance).toFixed(2);
     });
 }
 

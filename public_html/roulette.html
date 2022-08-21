@@ -48,20 +48,30 @@
         
         <div data-role="content">
             <div class ="float-container">
-                <div class="float-child-small">
+                <div class="float-child-third">
                     <div id="payout"><p>Winnings: $<span id="payout"></span></p></div>
                     <form>
                         <label for="bet">Bet Amount: $</label>
                         <input type="number" value=".10" min="0.10" max="1000.00" step=".10" id="bet">
                     </form>
-                    <input type="button" value="spin" style="float:left;" id='spin' />
+                    <button id="spin-button" style="border: 2px solid green;">Spin!</button>
                     <br>
                     <br>
                     <br>
                     <button id="demo-button" style="border: 2px solid blueviolet;">Demo</button>
                 </div>
-                <div id="game-container" class="float-child-large">
+
+                <div id="game-container" class="float-child-third">
                     <canvas id="canvas" width="500" height="500"></canvas>
+                </div>
+
+                <div id="bet-placements" class="float-child-third" style="margin-top: 5%;">
+                    <button id="red-button" style="background-color: #972a27; color: white;">Red</button>
+                    <button id="black-button" style="background-color: black; color: white;">Black</button>
+                    <form>
+                        <label for="bet">Number: </label>
+                        <input type="number" value=" " min="0" max="36" step="1" id="bet-number">
+                    </form>
                 </div>
             </div>
         </div>
