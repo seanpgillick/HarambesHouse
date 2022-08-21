@@ -183,7 +183,7 @@ spin.addEventListener("click", function(){
                         }
                     }
                 }
-                document.getElementById("balance").innerText = parseFloat(data.dbBalance).toFixed(2);
+                document.getElementById("balance").innerText = "$"+parseFloat(data.dbBalance).toFixed(2);
             })
             .catch((error) => {
                 console.error('Error', error);
@@ -342,7 +342,7 @@ demo.addEventListener("click", function(){
                         }
                     }
                 }
-                document.getElementById("balance").innerText = parseFloat(data.dbBalance).toFixed(2);
+                document.getElementById("balance").innerText = "$"+parseFloat(data.dbBalance).toFixed(2);
             })
             .catch((error) => {
                 console.error('Error', error);
