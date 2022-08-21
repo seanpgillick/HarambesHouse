@@ -70,6 +70,10 @@ var spinTimeTotal = 0;
 var ctx;
 
 document.getElementById("spin-button").addEventListener("click", spin);
+window.onload = (event) => {
+    document.getElementById("spin-button").disabled = true;
+};
+
 
 function byte2Hex(n) {
   var nybHexString = "0123456789ABCDEF";
@@ -260,6 +264,49 @@ function stopRotateWheel() {
 
   ctx.fillText(text, 250 - ctx.measureText(text).width / 2, 250 + 10);
   ctx.restore();
+ // document.getElementById("spin-button").disabled = false;
+  red.disabled = false;
+  black.disabled = false;
+  betNum.disabled = false;
+  betColor = "";
+}
+
+function demoSpin() {
+    bet = document.getElementById("bet").value;
+    document.getElementById("spin-button").disabled = true;
+    red.disabled = true;
+    black.disabled = true;
+    betNumber = document.getElementById("bet-number").value;
+    betNum.disabled = true;
+  spinAngleStart = Math.random() * 10 + 10;
+  spinTime = 0;
+  spinTimeTotal = Math.random() * 3 + 4 * 1000;
+  demoRotateWheel();
+}
+
+function demoRotateWheel() {
+    spinTime += 30;
+    if(spinTime >= spinTimeTotal) {
+      demoStopRotateWheel();
+      return;
+    }
+    var spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+    startAngle += (spinAngle * Math.PI / 180);
+    drawRouletteWheel();
+    spinTimeout = setTimeout('rotateWheel()', 30);
+  }
+
+function demoStopRotateWheel() {
+  clearTimeout(spinTimeout);
+  var degrees = startAngle * 180 / Math.PI + 90;
+  var arcd = arc * 180 / Math.PI;
+  var index = Math.floor((360 - degrees % 360) / arcd);
+  ctx.save();
+  ctx.font = 'bold 30px Helvetica, Arial';
+  var text = options[index]
+
+  ctx.fillText(text, 250 - ctx.measureText(text).width / 2, 250 + 10);
+  ctx.restore();
   document.getElementById("spin-button").disabled = false;
   red.disabled = false;
   black.disabled = false;
@@ -276,13 +323,23 @@ function easeOut(t, b, c, d) {
 drawRouletteWheel();
 
 red.addEventListener("click", function() {
+    document.getElementById("spin-button").disabled = false;
     betColor = "red";
     red.disabled = true;
     black.disabled = false;
 });
 
 black.addEventListener("click", function() {
+    document.getElementById("spin-button").disabled = false;
     betColor = "black";
     black.disabled = true;
     red.disabled = false;
 });
+
+document.getElementById("bet-number").addEventListener("input", function() {
+        document.getElementById("spin-button").disabled = false;
+});
+
+demo.addEventListener("click", function() {
+    demoSpin();
+})
