@@ -359,6 +359,78 @@ app.post("/spin", function(req, res) {
     });
 });
 
+app.post("/rouletteSpin/", function(req, res) {
+    connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.user, req.body.dbToken], function(err, result){
+        if(err) {
+            console.log(err);
+        }
+        if (result.length > 0){
+            let dbBalance = parseFloat(result[0]["balance"]);
+            let betAmount = parseFloat(req.query.bet);
+            let payout = 0;
+            console.log("bet!" + betAmount);
+                        
+            if (betAmount > dbBalance){
+                res.send({"validBet": false}); 
+            }
+
+            dbBalance = dbBalance - betAmount;
+
+            connection.query("Update accountInfo SET balance = ? WHERE username = ?", [dbBalance, req.body.user], function(err, result){
+                if (err) {
+                    console.error('Failed to update slot results: ' + err);
+                    res.status(500).send();
+                }
+            });
+            res.send({"payout": payout, "dbBalance": dbBalance});
+        }
+    });
+});
+
+app.post("/colorWin/", (req, res) => {
+    connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.user, req.body.dbToken], function(err, result){
+        if(err) {
+            console.log(err);
+        }
+        if(result.length > 0) {
+            dbBalance = parseFloat(result[0]["balance"]);
+            let bet = req.query.bet;
+            let payout = bet * 2;
+
+            dbBalance += (payout);
+            connection.query("Update accountInfo SET balance = ? WHERE username = ?", [dbBalance, req.body.user], function(err, result){
+                if (err) {
+                    console.error('Failed to update slot results: ' + err);
+                    res.status(500).send();
+                }
+            });
+            res.send({"payout": payout, "dbBalance": dbBalance});
+        }
+    })
+});
+
+app.post("/numberWin/", (req, res) => {
+    connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.user, req.body.dbToken], function(err, result){
+        if(err) {
+            console.log(err);
+        }
+        if(result.length > 0) {
+            dbBalance = parseFloat(result[0]["balance"]);
+            let bet = req.query.bet;
+            let payout = bet * 4;
+            
+            dbBalance += (payout);
+            connection.query("Update accountInfo SET balance = ? WHERE username = ?", [dbBalance, req.body.user], function(err, result){
+                if (err) {
+                    console.error('Failed to update slot results: ' + err);
+                    res.status(500).send();
+                }
+            });
+            res.send({"payout": payout, "dbBalance": dbBalance});
+        }
+    })
+});
+
 app.post("/pay/", (req, res) => {
     connection.query("SELECT balance FROM accountInfo WHERE username = ? AND loginToken = ?", [req.body.user, req.body.dbToken], function(err, result){
         if(err) {
