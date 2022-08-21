@@ -22,7 +22,7 @@
 
                     <div id="deposit"> 
                         <a href="#Deposit"><button>
-                            <div id="balance">$0.00</div>
+                            <div id="homeBalance">$0.00</div>
                             <div>Deposit ∨</div>
                         </button></a>  
                     </div>
@@ -34,7 +34,7 @@
         <!-- /header -->
 
         <script>
-            let balElement = document.getElementById("balance");
+            let balElement = document.getElementById("homeBalance");
             let username = getParameterByName('user');
             let token = getParameterByName('token');
             let urlEnd = "?user="+username+"&token="+token;
