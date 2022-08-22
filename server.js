@@ -288,6 +288,7 @@ app.post("/blackjack", function (req, res) {
             //tie
             if (userSum == dealerSum && dealerSum <= 21){
                 balance += 0;
+                payout = 0;
             }
             
             connection.query("Update accountInfo SET balance = ? WHERE username = ?", [balance, username], function(err, gameRes){
