@@ -24,6 +24,11 @@
                 if (!results) return null;
                 if (!results[2]) return '';
                 return decodeURIComponent(results[2].replace(/\+/g, ' '));
+
+                $(function() {
+                    $("#tooltip-1").tooltip();
+                    $("#tooltip-2").tooltip();
+                });
             }
         </script>
         <div data-role="header" data-position="fixed">
@@ -76,8 +81,8 @@
             <div data-role="footer">
                 <div data-role="navbar">
                     <ul>
-                        <li> <a href="" data-icon="location">Drexel CS338</a>
-                        <li> <a href="" data-icon="info">Contact Us</a>
+                        <li> <a id="tooltip-1" data-icon="location" title = "3141 Chestnut St, Philadelphia, PA 19104">Drexel CS338</a>
+                        <li> <a id="tooltip-2" data-icon="info" title = "sg3527@drexel.edu, ggf26@drexel.edu">Contact Us</a>
                     </ul>
                 </div>
             </div>
